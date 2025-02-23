@@ -98,8 +98,7 @@ void create_rounded_rect(Display *dpy, Window win, int width, int height, int ra
     
     XFillRectangle(dpy, mask, shape_gc, radius, 0, width - radius * 2, height);
     XFillRectangle(dpy, mask, shape_gc, 0, radius, width, height - radius * 2);
-    
-    XShapeCombineMask(dpy, win, ShapeBounding, 0, 0, mask, ShapeSet);
+ 
     
     XFreePixmap(dpy, mask);
     XFreeGC(dpy, shape_gc);
@@ -116,13 +115,6 @@ void draw_k9_branding() {
     XDrawString(display, root, gc, 10, screen_height - (PANEL_HEIGHT/2) + 5, "K9 Desktop", 10);
 }
 
-void create_blur_background() {
-    XRenderPictureAttributes pa;
-    XRenderPictFormat *format = XRenderFindVisualFormat(display, DefaultVisual(display, DefaultScreen(display)));
-    root_picture = XRenderCreatePicture(display, root, format, 0, &pa);
-    blur_picture = XRenderCreatePicture(display, root, format, 0, &pa);
-}
-
 int main() {
     display = XOpenDisplay(NULL);
     root = DefaultRootWindow(display);
@@ -132,7 +124,6 @@ int main() {
     create_session();
     load_session();
     register_as_de();
-    create_blur_background();
     
     while (1) {
         XEvent event;
