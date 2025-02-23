@@ -1,3 +1,3 @@
-gcc main.c -o k9-session cp k9* /bin/
-python3 init.py
+gcc main.c -o k9-session -lX11 
+sudo cp k9* /bin/
 alias k9=/bin/k9-session
