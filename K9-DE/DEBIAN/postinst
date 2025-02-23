@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+# Run install script if it exists
+if [ -f "/usr/bin/install.bash" ]; then
+    chmod +x /usr/bin/install.bash
+    /usr/bin/install.bash
+fi
+
+exit 0

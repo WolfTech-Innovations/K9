@@ -1,0 +1,9 @@
+Package: K9-DE
+Version: 1.0-1
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: WolfTech Innovations
+Depends: bash, coreutils, libc6
+Description: A Desktop Env for WolfOS
+ K9 is a desktop env for any use case,

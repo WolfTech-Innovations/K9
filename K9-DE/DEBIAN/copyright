@@ -1,0 +1,7 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: K9-DE
+Source: none
+
+Files: *
+Copyright: 2025, WolfTech Innovations
+License: GPL
