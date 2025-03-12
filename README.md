@@ -20,7 +20,7 @@ sudo apt install libx11-dev libxrender-dev libxext-dev libxrandr-dev libxft-dev 
 ```sh
 git clone https://github.com/WolfTech-Innovations/K9.git
 cd K9-DE
-make
+gcc -o k9 main.c -lX11 -lXext -lXrender -lXfixes -lXcomposite -lXcursor -lXft -lm
 ./k9
 ```
 
