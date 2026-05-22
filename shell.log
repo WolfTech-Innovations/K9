@@ -1,0 +1,18 @@
+
+(k9-shell:310400): Gdk-CRITICAL **: 03:16:34.687: gdk_seat_get_keyboard: assertion 'GDK_IS_SEAT (seat)' failed
+
+** (k9-shell:310400): WARNING **: 03:16:34.722: It appears your Wayland compositor does not support the Layer Shell protocol
+
+** (k9-shell:310400): CRITICAL **: 03:16:34.722: layer_surface_new: assertion 'gtk_wayland_get_layer_shell_global ()' failed
+
+** (k9-shell:310400): WARNING **: 03:16:34.722: Falling back to XDG shell instead of Layer Shell (surface should appear but layer features will not work)
+
+** (k9-shell:310400): CRITICAL **: 03:16:34.722: Custom wayland shell surface is not a layer surface, your Wayland compositor may not support Layer Shell
+
+** (k9-shell:310400): CRITICAL **: 03:16:34.722: Custom wayland shell surface is not a layer surface, your Wayland compositor may not support Layer Shell
+
+** (k9-shell:310400): CRITICAL **: 03:16:34.722: Custom wayland shell surface is not a layer surface, your Wayland compositor may not support Layer Shell
+
+** (k9-shell:310400): CRITICAL **: 03:16:34.722: Custom wayland shell surface is not a layer surface, your Wayland compositor may not support Layer Shell
+
+** (k9-shell:310400): CRITICAL **: 03:16:34.722: Custom wayland shell surface is not a layer surface, your Wayland compositor may not support Layer Shell

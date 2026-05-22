@@ -24,6 +24,7 @@
 #include <wlr/types/wlr_xcursor_manager.h>
 #include <wlr/types/wlr_xdg_shell.h>
 #include <wlr/types/wlr_layer_shell_v1.h>
+#include <wlr/types/wlr_screencopy_v1.h>
 #include <wlr/util/log.h>
 #include <xkbcommon/xkbcommon.h>
 
@@ -33,7 +34,6 @@ struct k9_server {
 	struct wlr_renderer *renderer;
 	struct wlr_allocator *allocator;
 	struct wlr_scene *scene;
-	struct wlr_scene_output_layout *scene_layout;
 
 	struct wlr_xdg_shell *xdg_shell;
 	struct wl_listener new_xdg_surface;
@@ -287,6 +287,7 @@ static void server_new_input(struct wl_listener *listener, void *data) {
 static void output_frame(struct wl_listener *listener, void *data) {
 	struct k9_output *output = wl_container_of(listener, output, frame);
 	struct wlr_scene_output *scene_output = wlr_scene_get_scene_output(output->server->scene, output->wlr_output);
+	if (!scene_output) return;
 	wlr_scene_output_commit(scene_output, NULL);
 	struct timespec now;
 	clock_gettime(CLOCK_MONOTONIC, &now);
@@ -311,6 +312,7 @@ static void server_new_output(struct wl_listener *listener, void *data) {
 	wl_signal_add(&wlr_output->events.frame, &output->frame);
 	wl_list_insert(&server->outputs, &output->link);
 	wlr_output_layout_add_auto(server->output_layout, wlr_output);
+	wlr_scene_attach_output_layout(server->scene, server->output_layout);
 }
 
 static void process_cursor_move(struct k9_server *server, uint32_t time) {
@@ -401,7 +403,6 @@ int main(int argc, char *argv[]) {
 	server.new_output.notify = server_new_output;
 	wl_signal_add(&server.backend->events.new_output, &server.new_output);
 	server.scene = wlr_scene_create();
-	server.scene_layout = wlr_scene_attach_output_layout(server.scene, server.output_layout);
 	wl_list_init(&server.views);
 	server.xdg_shell = wlr_xdg_shell_create(server.wl_display, 3);
 	server.new_xdg_surface.notify = server_new_xdg_surface;
@@ -409,6 +410,7 @@ int main(int argc, char *argv[]) {
 	server.layer_shell = wlr_layer_shell_v1_create(server.wl_display, 3);
 	server.new_layer_surface.notify = server_new_layer_surface;
 	wl_signal_add(&server.layer_shell->events.new_surface, &server.new_layer_surface);
+	wlr_screencopy_manager_v1_create(server.wl_display);
 	server.cursor = wlr_cursor_create();
 	wlr_cursor_attach_output_layout(server.cursor, server.output_layout);
 	server.cursor_mgr = wlr_xcursor_manager_create(NULL, 24);
@@ -429,11 +431,7 @@ int main(int argc, char *argv[]) {
 	if (!wlr_backend_start(server.backend)) return 1;
 	setenv("WAYLAND_DISPLAY", socket, 1);
 	signal(SIGCHLD, handle_sigchld);
-	if (fork() == 0) {
-		execlp("k9-shell", "k9-shell", NULL);
-		execl("/usr/local/bin/k9-shell", "k9-shell", NULL);
-		_exit(1);
-	}
+
 	wlr_log(WLR_INFO, "Running Wayland compositor on WAYLAND_DISPLAY=%s", socket);
 	wl_display_run(server.wl_display);
 	wl_display_destroy_clients(server.wl_display);
