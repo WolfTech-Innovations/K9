@@ -1,13 +1,20 @@
-gcc main.c -o k9-session -lX11
-# Ensure the script is run as root
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
-   exit 1
-fi
-# Set proper permissions
-chmod 644 "$TARGET_FILE"
+#!/bin/bash
+set -e
 
-# Notify the user
-echo "K9 desktop session file created at $TARGET_FILE" 
-sudo cp k9* /bin/
-alias k9=/bin/k9-session
+# Compile Compositor
+gcc -o k9-compositor main.c \
+    $(pkg-config --cflags --libs wlroots wayland-server xkbcommon) \
+    -DWLR_USE_UNSTABLE
+
+# Compile Shell
+gcc -o k9-shell shell.c \
+    $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
+
+# Install
+if [[ $EUID -eq 0 ]]; then
+    cp k9-compositor k9-shell /usr/local/bin/
+    echo "K9 components installed to /usr/local/bin/"
+else
+    echo "Run with sudo to install to /usr/local/bin/"
+    echo "Local binaries created in src/ directory"
+fi

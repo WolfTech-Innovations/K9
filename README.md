@@ -1,36 +1,35 @@
-# K9 Desktop Environment
+# K9 Desktop Environment (Wayland)
 
-K9 is a lightweight and modern X11-based desktop environment, designed for a sleek and efficient workflow. It features rounded window decorations, a system panel, blur effects, and smooth window management.
+K9 is a modern, polished Wayland desktop environment built with `wlroots` and GTK. It provides a unified, singular user experience with a sleek control center and dock.
 
 ## Features
-- **X11 Window Management**: Manages windows with a custom compositor.
-- **Blurred Background Effects**: Uses XRender for a smooth, blurred look.
-- **System Menu**: Accessible via a right-click or Super key.
-- **System Info Popup**: Press `Super+I` to view system details, including K9 registration as a DE.
-- **Lightweight**: Minimal dependencies, optimized for performance.
+- **Wayland Native**: High performance and security.
+- **Unified Shell**: GTK-based panel and dock with a modern control center.
+- **Polished UI**: Rounded corners, Tokyonight theme, and intuitive widgets.
+- **Interactive**: Support for moving, resizing, and focusing windows.
 
 ## Installation
 ### Dependencies
-Ensure you have the following installed:
 ```sh
-sudo apt install libx11-dev libxrender-dev libxext-dev libxrandr-dev libxft-dev libxcomposite-dev
+sudo apt update
+sudo apt install -y libwlroots-dev libwayland-dev wayland-protocols \
+    pkg-config libxkbcommon-dev libpixman-1-dev libgles2-mesa-dev \
+    libinput-dev libgbm-dev libudev-dev libgtk-3-dev libgtk-layer-shell-dev
 ```
 
-### Build and Run
+### Build and Install
 ```sh
-git clone https://github.com/WolfTech-Innovations/K9.git
-cd K9
-sudo bash build.bash
-./k9
+cd src
+bash build.bash
+sudo cp k9-compositor k9-shell /usr/local/bin/
 ```
 
-## Keybindings
-- `Super+I`: Open system info popup
-- `Super+M`: Open menu
-
-## Contributing
-Contributions are welcome! Feel free to submit a pull request or report issues.
+### Running
+To start the K9 session:
+```sh
+k9-compositor
+```
+*Tip: Use Alt+Escape to exit the compositor.*
 
 ## License
 GPL License
-
